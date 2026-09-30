@@ -61,7 +61,7 @@ Et pour tous : mode clair et sombre, interface utilisable au clavier et avec un 
 **Le parcours d'un retour, de bout en bout**
 
 ```mermaid
-flowchart LR
+flowchart TD
     A["🧑 Un testeur<br/>dépose un retour"] --> B["🤖 L'IA propose<br/>type et criticité"]
     B --> C["👍 Les autres<br/>votent"]
     C --> D["📊 Le responsable produit<br/>priorise sur les votes"]
@@ -206,7 +206,7 @@ flowchart LR
 Echo n'a pas été construit d'un bloc. Chaque version part de la précédente, en ajoutant ce que l'usage ou les retours ont fait apparaître.
 
 ```mermaid
-flowchart LR
+flowchart TD
     V1["V1<br/>Le socle"] --> V15["V1.5<br/>Premiers retours"]
     V15 --> V25["V2 à V5<br/>Travail d'équipe"]
     V25 --> V6["V6<br/>Pilotage des bugs"]
