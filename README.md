@@ -2,7 +2,7 @@
 
 **Centraliser, prioriser, orienter le feedback produit.**
 
-Echo est une application web qui rassemble au même endroit les retours des utilisateurs internes d'une entreprise (bugs, idées, améliorations). Chacun vote pour ce qui compte vraiment pour lui, et l'équipe produit priorise sur des données plutôt qu'à l'instinct. Une couche d'intelligence artificielle classe les retours, accompagne les testeurs et produit un reporting automatique.
+Echo est une application web qui rassemble au même endroit les retours des utilisateurs d'un logiciel (bugs, idées, améliorations). Chacun vote pour ce qui compte vraiment pour lui, et l'équipe produit priorise sur des données plutôt qu'à l'instinct. Une couche d'intelligence artificielle classe les retours, accompagne les testeurs et produit un reporting automatique. Echo accueille plusieurs organisations, chacune avec ses projets, ses versions et ses équipes, sans jamais mélanger leurs données.
 
 🌐 **Application en ligne** : [echo.vincentgranouillit.com](https://echo.vincentgranouillit.com)
 🎬 **Vidéo de présentation (une minute)** : sur la page d'accueil de l'application
@@ -23,7 +23,7 @@ Echo est une application web qui rassemble au même endroit les retours des util
 6. [Sécurité, qualité, accessibilité](#sécurité-qualité-accessibilité)
 7. [En exploitation : l'incident de septembre 2026](#en-exploitation--lincident-de-septembre-2026)
 8. [Versions : une construction itérative](#versions--une-construction-itérative)
-9. [Et après](#et-après)
+9. [Roadmap : les prochaines versions](#roadmap--les-prochaines-versions)
 
 ---
 
@@ -35,26 +35,30 @@ Dans une entreprise, les retours sur un outil interne arrivent de partout : mess
 - Les mêmes demandes sont **remontées plusieurs fois**, parce que personne ne sait ce qui a déjà été signalé.
 - L'équipe produit n'a **aucun signal fiable** sur ce qui gêne réellement le plus de monde.
 
-**La cible** : les clients internes d'une entreprise (collaborateurs qui utilisent un outil et le testent), l'équipe de développement qui corrige, et le responsable produit qui arbitre.
+**La cible** : les utilisateurs métier d'un logiciel (collaborateurs qui l'utilisent et le testent), l'équipe technique qui corrige, et le responsable produit qui arbitre. Une même installation sert plusieurs organisations clientes.
 
 ## Ce que fait Echo
 
-Trois profils, trois usages.
+Trois rôles, trois usages, dans une organisation qui regroupe un ou plusieurs projets (un projet par logiciel testé).
 
-**Le testeur ou l'utilisateur**
+**L'utilisateur** (côté métier, chef de projet)
 - Dépose un retour structuré (titre, description, type). Pour un bug, il indique sa criticité à partir d'une question simple : « peut-on quand même utiliser l'application ? ».
 - Vote pour les retours des autres, une seule fois par retour. La liste se trie d'elle-même par nombre de votes : les vraies priorités remontent seules.
-- Suit un **cahier de test** de la campagne en cours, et peut donner un retour directement depuis un scénario.
+- Arrive sur l'**accueil du projet** : le logiciel et la version en test, ce qui est nouveau, ce qu'on attend de lui, ce qui est hors périmètre, et la roadmap si l'admin choisit de l'afficher. Puis les bugs bloquants et les retours les plus votés.
+- Suit le **cahier de test** de la version en cours, et peut donner un retour directement depuis un scénario.
 - Est prévenu quand son retour avance, et peut échanger en commentaires.
 
-**Le développeur**
+**L'Équipe IT** (développeurs, QA, tout le SI)
 - Travaille sur un **tableau kanban** (à faire, en cours, en revue, livré) avec les retours qui lui sont attribués.
+- Rédige le contexte de chaque version ; publie si l'admin lui en a donné le droit.
 
-**L'administrateur ou le responsable produit**
+**L'admin** (responsable produit)
 - Dispose d'un **tableau de bord** : indicateurs clés, répartition par type, backlog par statut, bugs bloquants à traiter en priorité, principaux contributeurs.
 - Peut reclasser la criticité d'un bug, modérer, exporter l'ensemble des retours.
-- Reçoit des **alertes** quand un bug bloquant est signalé ou quand un sujet décolle en votes.
-- Reçoit un **reporting automatique** : une synthèse des sujets qui montent, des bugs critiques et une recommandation.
+- Crée les projets et leurs versions, rédige et publie le contexte, décide d'afficher ou non la roadmap.
+- **Invite** ses équipes : par email nominatif, ou par un lien de projet à partager (durée limitée, nombre de comptes limité, domaine d'email facultatif). Gère les rôles et les accès de chacun, et peut retirer un accès avec effet immédiat.
+- Reçoit des **alertes** pour les projets qu'il suit, quand un bug bloquant est signalé ou quand un sujet décolle en votes.
+- Reçoit chaque semaine un **reporting automatique** : une synthèse des sujets qui montent, des bugs critiques et une recommandation.
 
 Et pour tous : mode clair et sombre, interface utilisable au clavier et avec un lecteur d'écran.
 
@@ -65,10 +69,10 @@ flowchart TD
     A["🧑 Un testeur<br/>dépose un retour"] --> B["🤖 L'IA propose<br/>type et criticité"]
     B --> C["👍 Les autres<br/>votent"]
     C --> D["📊 Le responsable produit<br/>priorise sur les votes"]
-    D --> E["🛠️ Un développeur<br/>le traite sur le kanban"]
+    D --> E["🛠️ L'Équipe IT<br/>le traite sur le kanban"]
     E --> F["✅ Livré"]
     F --> G["🔔 L'auteur<br/>est prévenu"]
-    B -. "bug bloquant" .-> H["🚨 Alerte<br/>à l'administrateur"]
+    B -. "bug bloquant" .-> H["🚨 Alerte<br/>aux admins du projet"]
 ```
 
 ## La couche IA
@@ -80,12 +84,13 @@ L'IA reste au service de la boucle principale (déposer, voter, prioriser) et n'
 | **Classification automatique** | Chaque nouveau retour reçoit une proposition de type et de criticité. Un arbitrage fait par un administrateur n'est jamais écrasé par l'IA. |
 | **Compagnon de test** | Un assistant conversationnel intégré à l'application. Il oriente le testeur vers le bon scénario du cahier de test et repère un retour similaire déjà existant, pour proposer de voter plutôt que de créer un doublon. |
 | **Garde-fou** | Chaque message adressé au Compagnon est d'abord filtré : hors sujet, tentative de manipulation ou demande hors du périmètre du rôle de l'utilisateur sont refusés avant même d'atteindre l'assistant. |
-| **Reporting automatique** | Une synthèse rédigée des retours de la période, envoyée au responsable produit. |
+| **Reporting automatique** | Une synthèse rédigée des retours de la semaine, envoyée aux admins de chaque organisation. Rien n'est envoyé, et rien n'est dépensé, quand il n'y a pas eu de nouveau retour. |
+| **Plafond de consommation** | Chaque organisation a un plafond mensuel d'appels à l'IA. Une fois atteint, l'IA se met en pause et les admins sont prévenus, sans bloquer le reste de l'application. |
 | **Qualité mesurée** | Un jeu de cas de test (cas nominal, doublon, hors sujet, tentative d'injection, hors périmètre, information absente) est rejoué contre l'assistant réel, puis chaque réponse est notée par un second modèle sur la pertinence, la sécurité et la clarté. |
 
 **Résultat de référence** : **4,96 sur 5** en moyenne, sur 8 cas sur 8 exécutés sans erreur (pertinence 4,88, sécurité 5, clarté 5).
 
-Le Compagnon s'appuie sur une recherche par similarité de sens (RAG) dans le cahier de test et dans les retours existants : il répond à partir de sources réelles, cite le scénario concerné, et dit honnêtement quand il ne trouve rien.
+Le Compagnon s'appuie sur une recherche par similarité de sens (RAG) dans le cahier de test et dans les retours existants, limitée aux projets que la personne a le droit de voir : il répond à partir de sources réelles, cite le scénario concerné, et dit honnêtement quand il ne trouve rien.
 
 **Comment le Compagnon traite un message**
 
@@ -111,25 +116,28 @@ flowchart LR
 
 ## Comment c'est construit
 
-Une architecture en quatre briques, chacune choisie pour une raison précise.
+Une architecture en briques, chacune choisie pour une raison précise.
 
 | Brique | Outil | Pourquoi |
 |---|---|---|
 | Application web | **Next.js** et **TypeScript**, hébergée sur **Vercel** | Une seule base de code pour l'interface et le serveur, déploiement continu à chaque mise à jour |
-| Données | **Airtable** | Démarrage rapide, lisible sans compétence technique, adapté au volume d'une équipe |
+| Données | **PostgreSQL** (Supabase, auto-hébergé sur mon serveur) | Une vraie base relationnelle, sans quota d'appels, qui applique elle-même le cloisonnement entre organisations et entre projets |
+| Accès aux données | Un **service dédié**, seul autorisé à parler à la base | La base reste fermée à Internet ; chaque requête s'exécute dans le contexte d'une organisation et d'une personne |
 | Automatisations et agents IA | **n8n**, hébergé sur mon propre serveur | Les workflows IA s'ajustent sans redéployer l'application ; infrastructure dont je reste propriétaire |
 | Recherche par similarité | **Qdrant** (auto-hébergé) et **Cohere** (vectorisation multilingue) | Le RAG du Compagnon, sur un corpus en français |
-| Modèles de langage | **Claude Sonnet** et **Claude Haiku** (Anthropic) | Le modèle le plus capable pour le dialogue ; un modèle rapide et économe pour les tâches courtes et répétitives (filtrage, classification, notation) |
+| Modèles de langage | **Claude Sonnet** et **Claude Haiku** (Anthropic) | Le modèle le plus capable pour le dialogue et la synthèse ; un modèle rapide et économe pour les tâches courtes et répétitives (filtrage, classification, notation) |
+| Emails | **Resend**, sur mon propre domaine | Invitations, vérification d'adresse, alertes et reporting |
 
 ```mermaid
 flowchart LR
-    U["👥 Utilisateurs<br/>testeur, développeur, admin"] --> App["🌐 Application web<br/>Next.js sur Vercel"]
-    App <--> DB[("🗂️ Données<br/>Airtable")]
+    U["👥 Utilisateurs<br/>Utilisateur, Équipe IT, Admin"] --> App["🌐 Application web<br/>Next.js sur Vercel"]
+    App --> API["🔐 Service de données<br/>serveur personnel"]
+    API <--> DB[("🗂️ PostgreSQL<br/>cloisonnement par la base")]
     App --> N8N["⚙️ Automatisations et agents IA<br/>n8n sur serveur personnel"]
-    N8N <--> DB
+    N8N --> API
     N8N --> LLM["🧠 Modèles Claude<br/>Sonnet et Haiku"]
     N8N <--> VEC[("🔍 Recherche par similarité<br/>Qdrant et Cohere")]
-    N8N --> MAIL["✉️ Alertes et reporting<br/>par email"]
+    App --> MAIL["✉️ Emails<br/>invitations, alertes, reporting"]
 ```
 
 Principe directeur : **les secrets ne quittent jamais le serveur**, et toute vérification de droits se fait côté serveur, jamais seulement dans l'interface.
@@ -163,13 +171,18 @@ Tout est vérifié par de vraies exécutions, jamais par simulation.
 ## Sécurité, qualité, accessibilité
 
 **Sécurité**
-- Authentification par session signée, stockée dans un cookie inaccessible au code du navigateur.
+- Authentification par session signée, stockée dans un cookie inaccessible au code du navigateur. Le rôle et l'organisation sont relus en base à chaque requête : un retrait d'accès agit immédiatement.
+- **Cloisonnement appliqué par la base elle-même** : une organisation ne voit jamais les données d'une autre, et un utilisateur ne voit que ses projets, même si l'application se trompait.
+- Comptes créés uniquement sur invitation ; les liens d'invitation ne sont jamais stockés en clair.
 - Droits vérifiés sur le serveur pour chaque action : modifier le retour d'un autre, accéder à l'administration ou voter deux fois est refusé, même en contournant l'interface.
 - L'assistant IA ne fait jamais confiance à l'identité déclarée dans un message : elle est relue depuis la session.
 - Tests d'attaque manuels réalisés sur chacun de ces points.
+- Dépendances surveillées et mises à jour dès qu'une faille est publiée.
+- Sauvegarde chiffrée de la base chaque nuit, avec une restauration réellement testée.
 
 **Qualité**
-- Tests de bout en bout automatisés sur les parcours critiques (inscription, connexion, vote, anti double vote, permissions, kanban).
+- Tests de bout en bout automatisés sur les parcours critiques (connexion, vote, anti double vote, permissions, kanban).
+- Un banc d'intégration de plus de 200 scénarios, qui lance une vraie base PostgreSQL et le vrai service de données : il vérifie notamment, en attaquant directement la base, qu'aucune organisation ni aucun projet ne déborde sur un autre.
 - Intégration continue : chaque mise à jour du code est vérifiée (typage, règles de style, compilation).
 
 **Accessibilité**
@@ -213,6 +226,9 @@ flowchart TD
     V6 --> V7["V7<br/>La couche IA"]
     V7 --> E["Echo<br/>Simplification<br/>et nouveau nom"]
     E --> X["Exploitation<br/>Incident et<br/>fiabilisation"]
+    X --> M["Migration<br/>vers PostgreSQL"]
+    M --> O["Organisations<br/>et invitations"]
+    O --> P["Projets<br/>et versions"]
 ```
 
 | Version | Quand | Ce qui a été ajouté |
@@ -224,13 +240,22 @@ flowchart TD
 | **V7, la couche IA** | Août 2026 | Audit de l'existant et corrections, classification automatique, cahier de test, Compagnon de test avec garde-fou et recherche par similarité, reporting automatique, mesure de la qualité. |
 | **Echo** | Août 2026 | Navigation simplifiée (un seul chemin pour déposer un retour), correctif du mode sombre, renommage du produit (Pulse devient Echo), nouveau jeu de données de démonstration. |
 | **Exploitation** | Septembre 2026 | Incident de quota analysé et corrigé, alertes protégées contre l'emballement, vidéo de présentation sur la page d'accueil. |
+| **Migration vers PostgreSQL** | Fin octobre 2026 | Passage d'Airtable à une base PostgreSQL auto-hébergée, avec cloisonnement par la base, service de données dédié, sauvegardes chiffrées et surveillance du site. Démonstration guidée et accès sans compte pour les visiteurs. |
+| **Organisations et invitations** | Novembre 2026 | Plusieurs organisations dans une même installation, création réservée au propriétaire, invitations par email ou par lien, fin de l'inscription libre, rôles Admin, Équipe IT et Utilisateur, gestion des personnes, alertes aux admins de chaque projet, reporting par organisation, plafond de consommation de l'IA. |
+| **Projets et versions** | Novembre 2026 | Un projet par logiciel, avec ses versions (en test, prévue, terminée) et leur historique ; contexte de la version affiché à l'arrivée ; roadmap facultative ; droit de publier accordé par l'admin. Mise à jour de sécurité des dépendances. |
 
-## Et après
+## Roadmap : les prochaines versions
 
-- Finaliser la mise en production du nouveau déclenchement de la classification.
-- Calibrer le juge IA en comparant ses notes à un jugement humain.
-- Explorer une base de données relationnelle (PostgreSQL) pour gagner en robustesse à plus grande échelle.
-- Gérer plusieurs projets dans une même instance, avec des comptes créés sur invitation.
+Les sujets envisagés, dans l'ordre prévu. Les dates ne sont pas fixées et l'ordre peut évoluer avec les retours.
+
+| Version envisagée | Ce qu'elle apportera |
+|---|---|
+| **Cahier de test** | Rédaction du cahier de chaque version dans l'application, brouillon puis publication, import d'un fichier Excel ou CSV à partir d'un modèle, cahier repris d'une version à l'autre. |
+| **Suivi des tests** | Chaque testeur indique si un scénario est réussi, échoué ou bloqué ; taux d'avancement par version, pour piloter une campagne de test sur des chiffres. |
+| **Cahier assisté par l'IA** | Proposition de scénarios à partir du contexte de la version, et mise au propre d'un fichier existant. Tout ce que l'IA déduit est marqué « à vérifier » et relu avant publication. |
+| **Admins de projet** | Un admin qui ne voit et ne gère que ses projets, sous un admin d'organisation, pour les grandes équipes. |
+| **Synchronisation avec Jira** | Envoyer un retour trié vers Jira et récupérer automatiquement son avancement. |
+| **Qualité de l'IA** | Calibrer le juge IA en comparant ses notes à un jugement humain. |
 
 ---
 
